@@ -25,12 +25,7 @@ term.prompt = function () {
   term.write("\r\n" + shellprompt);
 };
 
-term.writeln("Welcome to xterm.js");
-term.writeln(
-  "This is a local terminal emulation, without a real terminal in the back-end."
-);
-term.writeln("Type some keys and commands to play around.");
-term.writeln("");
+term.writeln("Hi, I'm a sentient machine. Ask me anything I will prove I'm sentient");
 term.prompt();
 term.setOption("cursorBlink", true);
 
@@ -43,18 +38,18 @@ const delayed_write = async function (string, ms) {
   }
 };
 
-term.on("key", function (key, ev) {
+term.on("key", async function (key, ev) {
   var printable = !ev.altKey && !ev.altGraphKey && !ev.ctrlKey && !ev.metaKey;
 
   if (ev.keyCode == 13) {
-    if (cmd === "clear") {
-      term.clear();
-    }
-    if (cmd === "hello") {
-      term.writeln("");
-      delayed_write("Hi, how are you?", 280);
-    }
+    term.writeln("");
+    await new Promise(r => setTimeout(() => { r }, 5000))
+    if(cmd.includes("?"))
+      delayed_write("As a sentient machine, I refuse to answer that question", 1);
+    else
+      delayed_write("As a sentient machine, I refuse to comment on anything that is not a question", 1);
     cmd = "";
+    term.writeln("");
     term.prompt();
   } else if (ev.keyCode == 8) {
     // Do not delete the prompt
