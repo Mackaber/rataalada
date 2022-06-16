@@ -1,15 +1,10 @@
-var shellprompt = "<?>";
+var shellprompt = ">";
 
 term.prompt = function () {
   term.write("\r\n" + shellprompt);
 };
 
-term.writeln("Welcome to xterm.js");
-term.writeln(
-  "This is a local terminal emulation, without a real terminal in the back-end."
-);
-term.writeln("Type some keys and commands to play around.");
-term.writeln("");
+term.writeln("Hi, I'm a sentient machine. Ask me anything I will prove I'm sentient");
 term.prompt();
 term.setOption("cursorBlink", true);
 
@@ -30,11 +25,16 @@ const parse_command = cmd => {
     term.writeln("COMMAND NOT FOUND");    
 }
 
-term.onKey((key, ev) => {
+term.onKey( async (key, ev) => {
   if (key.key === '\r') {
-    term.writeln("")
-    parse_command(cmd)
+    term.writeln("");
+    await new Promise(r => setTimeout(() => { r() }, 2000))
+    if(cmd.includes("?"))
+      await delayed_write("As a sentient machine, I refuse to answer that question", 100);
+    else
+      await delayed_write("As a sentient machine, I refuse to comment on anything that is not a question", 100);
     cmd = "";
+    term.writeln("");
     term.prompt();
   } else if (key.key === '\x7F') {
     // Do not delete the prompt
